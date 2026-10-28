@@ -10,6 +10,7 @@ import {
   Clock,
   ArrowRight
 } from 'lucide-react';
+import { BRAND_NAME } from '../data/hospitalityData';
 
 interface TradeBenefitsCalculatorProps {
   onRequestAdvisory: () => void;
@@ -19,24 +20,24 @@ export const TradeBenefitsCalculator: React.FC<TradeBenefitsCalculatorProps> = (
   onRequestAdvisory
 }) => {
   const [keysCount, setKeysCount] = useState<number>(60);
-  const [budgetPerKey, setBudgetPerKey] = useState<number>(1200);
+  const [budgetPerKey, setBudgetPerKey] = useState<number>(1400);
   const [includePublicAreas, setIncludePublicAreas] = useState<boolean>(true);
 
   // Calculations
   const guestRoomTotal = keysCount * budgetPerKey;
-  const publicAreaTotal = includePublicAreas ? Math.max(18000, keysCount * 350) : 0;
+  const publicAreaTotal = includePublicAreas ? Math.max(22000, keysCount * 450) : 0;
   const totalRetailBudget = guestRoomTotal + publicAreaTotal;
 
   // Determine Trade Discount Tier
   let discountPercentage = 15;
-  let tierName = 'Trade Associate Tier';
+  let tierName = 'Atelier Trade Associate';
 
   if (totalRetailBudget >= 150000) {
     discountPercentage = 30;
-    tierName = 'Enterprise Hospitality Rollout';
+    tierName = 'Enterprise Hospitality Rollout Tier';
   } else if (totalRetailBudget >= 75000) {
     discountPercentage = 25;
-    tierName = 'Flagship Hotel Tier';
+    tierName = 'Flagship Hotel & Portrait Suite Tier';
   } else if (totalRetailBudget >= 35000) {
     discountPercentage = 20;
     tierName = 'Boutique Property Tier';
@@ -44,7 +45,7 @@ export const TradeBenefitsCalculator: React.FC<TradeBenefitsCalculatorProps> = (
 
   const estimatedSavings = Math.round(totalRetailBudget * (discountPercentage / 100));
   const finalTradePrice = totalRetailBudget - estimatedSavings;
-  const estimatedTaxSavings = Math.round(finalTradePrice * 0.0825); // Estimated 8.25% commercial resale tax exemption
+  const estimatedTaxSavings = Math.round(finalTradePrice * 0.0825);
 
   return (
     <section id="calculator" className="bg-[#F8F6F1] py-16 lg:py-24 border-b border-[#E8E2D7]">
@@ -54,13 +55,13 @@ export const TradeBenefitsCalculator: React.FC<TradeBenefitsCalculatorProps> = (
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
           <div className="inline-flex items-center space-x-2 px-3 py-1 bg-[#ECE7DE] border border-[#DDD6CB] text-[11px] font-semibold tracking-wider text-[#3D3730] uppercase">
             <Percent className="w-3.5 h-3.5 text-[#B8860B]" />
-            <span>Saatchi Art For The Trade</span>
+            <span>{BRAND_NAME} For The Trade</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#111111] tracking-tight">
-            Hospitality Trade Volume Calculator
+            Hospitality & Portrait Trade Volume Calculator
           </h2>
           <p className="text-sm sm:text-base text-[#5E574E] leading-relaxed">
-            Estimate your project savings, trade tier pricing, and complimentary advisory hours based on room keys and scope.
+            Estimate your project savings, trade tier pricing, and complimentary curatorial hours based on room keys and bespoke portrait commission scope.
           </p>
         </div>
 
@@ -118,8 +119,8 @@ export const TradeBenefitsCalculator: React.FC<TradeBenefitsCalculatorProps> = (
                 />
                 <div className="flex justify-between text-[11px] text-[#8C827A]">
                   <span>$400 (Framed Editions)</span>
-                  <span>$1,200 (Custom Diptych)</span>
-                  <span>$4,000 (Original Oil Suite)</span>
+                  <span>$1,400 (Custom Bedhead Portrait)</span>
+                  <span>$4,000 (Original Oil Masterpiece)</span>
                 </div>
               </div>
 
@@ -127,10 +128,10 @@ export const TradeBenefitsCalculator: React.FC<TradeBenefitsCalculatorProps> = (
               <div className="p-4 bg-[#FAF9F6] border border-[#E5DFD5] flex items-center justify-between">
                 <div>
                   <div className="text-xs font-semibold text-[#111111]">
-                    Include Public Areas & Atrium Art
+                    Include Grand Salons, Dining & Corridor Promenade
                   </div>
                   <div className="text-[11px] text-[#7A7268]">
-                    Lobbies, dining lounges, corridors, and spa zones
+                    Monumental portraiture, private dining paintings, and spa bas-reliefs
                   </div>
                 </div>
                 <input
@@ -146,15 +147,15 @@ export const TradeBenefitsCalculator: React.FC<TradeBenefitsCalculatorProps> = (
             <div className="pt-4 border-t border-[#EFECE6] text-xs text-[#524B43] space-y-1.5">
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                <span>Complimentary Project Art Advisory & Curated Lookbook ($4,500 value)</span>
+                <span>Complimentary Project Art Advisory & Custom Lookbook ($4,500 value)</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                <span>Turnkey Security Hardware & Anti-Theft Cleat Packaging</span>
+                <span>Turnkey Security Hardware & 3-Point Cleat Packaging</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                <span>Dedicated Single Point-of-Contact Project Account Executive</span>
+                <span>Dedicated Single Point-of-Contact Atelier Senior Curator</span>
               </div>
             </div>
           </div>
@@ -212,9 +213,9 @@ export const TradeBenefitsCalculator: React.FC<TradeBenefitsCalculatorProps> = (
                   Included Trade Entitlements:
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[11px] text-[#A39990]">
-                  <div>• 30+ Sourced Artworks</div>
+                  <div>• Custom Portrait Commission Mockups</div>
                   <div>• High-Res 3D In-Situ Renders</div>
-                  <div>• Material Swatch Samples</div>
+                  <div>• Oil & Canvas Swatch Samples</div>
                   <div>• Consolidated Crate Freight</div>
                 </div>
               </div>
@@ -230,7 +231,7 @@ export const TradeBenefitsCalculator: React.FC<TradeBenefitsCalculatorProps> = (
                 <ArrowRight className="w-4 h-4" />
               </button>
               <div className="text-center text-[11px] text-[#8C827A] mt-2">
-                Quotes are binding for 90 days. Net 30/60 terms available upon approval.
+                Quotes are binding for 90 days. Net 30/60 trade terms available upon approval.
               </div>
             </div>
 

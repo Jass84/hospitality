@@ -1,5 +1,6 @@
 export type SpaceCategory =
   | 'all'
+  | 'portraits'
   | 'guest_rooms'
   | 'lobbies'
   | 'restaurants'
@@ -7,12 +8,15 @@ export type SpaceCategory =
   | 'corridors'
   | 'outdoor';
 
+export type ArtOrientation = 'all' | 'portrait' | 'landscape' | 'multipanel';
+
 export interface HospitalitySpace {
   id: string;
   title: string;
   propertyName: string;
   location: string;
   category: SpaceCategory;
+  orientation?: 'portrait' | 'landscape' | 'multipanel' | 'square';
   image: string;
   artworkImage?: string;
   secondaryImages?: string[];
@@ -30,9 +34,15 @@ export interface HospitalitySpace {
   acousticRated?: boolean;
   fireRated?: boolean;
   customScaleAvailable?: boolean;
+  isPortraitFeatured?: boolean;
 }
 
 export type CuratedArtStyle = 
+  | 'Fine Art Portraiture'
+  | 'Bas-Relief Portrait'
+  | 'Figurative Impasto'
+  | 'Chiaroscuro & 24k Gold'
+  | 'Wabi-Sabi Figurative'
   | 'Abstract Minimal' 
   | 'Textured Earth' 
   | 'Architectural Monolith' 
@@ -55,9 +65,12 @@ export interface CuratedArtwork {
   dimensions: string;
   image: string;
   style: CuratedArtStyle;
+  orientation?: 'portrait' | 'landscape' | 'multipanel' | 'square';
   suggestedRoom: string;
   tradePrice: string;
   retailPrice: string;
+  isPortrait?: boolean;
+  aspectRatioLabel?: string;
 }
 
 export interface SpecItem {

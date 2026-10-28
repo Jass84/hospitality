@@ -12,9 +12,11 @@ import {
   Maximize2,
   FileSpreadsheet,
   Building,
-  UserCheck
+  UserCheck,
+  Palette
 } from 'lucide-react';
 import { HospitalitySpace, SpecItem } from '../types';
+import { BRAND_NAME } from '../data/hospitalityData';
 
 interface SpaceModalProps {
   space: HospitalitySpace | null;
@@ -57,7 +59,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
         <div className="sticky top-0 z-20 bg-[#FAF9F6]/95 backdrop-blur-md px-6 py-4 border-b border-[#E5DFD5] flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8C837A]">
-              Hospitality Project Curation
+              Atelier Space & Portrait Curation
             </span>
             <span className="text-[#C4BFB4]">/</span>
             <span className="text-xs font-medium text-[#111111]">{space.propertyName}</span>
@@ -90,7 +92,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
                         : 'text-[#665F55] hover:text-[#111111]'
                     }`}
                   >
-                    In-Situ Room View
+                    In-Situ Room Architecture
                   </button>
                   <button
                     onClick={() => setSelectedImageView('artwork')}
@@ -100,7 +102,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
                         : 'text-[#665F55] hover:text-[#111111]'
                     }`}
                   >
-                    <span>Curated Artwork View</span>
+                    <span>Curated Artwork Texture</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
                   </button>
                 </div>
@@ -115,7 +117,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
                 />
                 <div className="absolute bottom-3 left-3 bg-[#111111]/90 backdrop-blur-xs text-white text-[11px] px-3 py-1 font-medium">
                   {selectedImageView === 'artwork'
-                    ? `Curated Artwork: ${space.artworkTitle} by ${space.artistName}`
+                    ? `Artwork: ${space.artworkTitle} by ${space.artistName}`
                     : `In-situ at ${space.propertyName} (${space.location})`}
                 </div>
               </div>
@@ -167,7 +169,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
 
               <div className="text-[11px] text-[#7A7268] flex items-center justify-between px-1">
                 <span>Photography courtesy of {space.propertyName}</span>
-                <span className="text-[#111111] font-medium">Curated by Saatchi Art Trade</span>
+                <span className="text-[#111111] font-medium">Curated by {BRAND_NAME} Trade</span>
               </div>
             </div>
 
@@ -271,7 +273,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-[#E5DFD5]">
             <div className="space-y-3">
               <h4 className="font-serif text-lg font-medium text-[#111111]">
-                Project Narrative & Architectural Fit
+                Spatial Narrative & Architectural Fit
               </h4>
               <p className="text-xs sm:text-sm text-[#5E574E] leading-relaxed">
                 {space.description}
@@ -288,7 +290,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
 
             <div className="space-y-3">
               <h4 className="font-serif text-lg font-medium text-[#111111]">
-                Commercial Hospitality Specifications
+                Hospitality & Fine Art Specifications
               </h4>
               <ul className="space-y-2.5 text-xs text-[#4A443D]">
                 <li className="flex items-start space-x-2">
@@ -300,7 +302,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
                 <li className="flex items-start space-x-2">
                   <Flame className="w-4 h-4 text-[#111111] shrink-0 mt-0.5" />
                   <span>
-                    <strong>Fire & Smoke Ratings:</strong> Treated substrates meet Class A (ASTM E84) commercial interior fire safety regulations.
+                    <strong>Fire & Smoke Safety:</strong> Treated canvas and linen substrates meet Class A (ASTM E84) commercial interior regulations.
                   </span>
                 </li>
                 {space.acousticRated && (
@@ -314,7 +316,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
                 <li className="flex items-start space-x-2">
                   <UserCheck className="w-4 h-4 text-[#111111] shrink-0 mt-0.5" />
                   <span>
-                    <strong>Direct Artist Authenticity:</strong> Accompanied by Saatchi Art archival Certificate of Authenticity and provenance record.
+                    <strong>Direct Atelier Authenticity:</strong> Accompanied by {BRAND_NAME} archival Certificate of Authenticity and provenance record.
                   </span>
                 </li>
               </ul>
@@ -325,7 +327,7 @@ export const SpaceModal: React.FC<SpaceModalProps> = ({
 
         {/* Footer info strip */}
         <div className="bg-[#EFEAE1] px-6 py-3 border-t border-[#DDD6CB] flex items-center justify-between text-xs text-[#6B6359]">
-          <span>Need custom sizing or alternative frame finishes for this space?</span>
+          <span>Need custom portrait scaling or bespoke frame moulding for this space?</span>
           <button
             onClick={() => {
               onClose();

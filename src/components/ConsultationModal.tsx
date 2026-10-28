@@ -6,12 +6,14 @@ import {
   Building2, 
   FileText, 
   Send, 
-  ShieldCheck,
-  Download,
-  Calendar,
-  Layers
+  ShieldCheck, 
+  Download, 
+  Calendar, 
+  Layers,
+  Palette
 } from 'lucide-react';
 import { AdvisoryInquiry, SpecItem } from '../types';
+import { BRAND_NAME, BRAND_EMAIL, BRAND_PHONE } from '../data/hospitalityData';
 
 interface ConsultationModalProps {
   isOpen: boolean;
@@ -38,7 +40,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
     numberOfKeys: '50-100 Keys',
     estimatedBudget: '$50,000 - $150,000',
     targetCompletion: 'Q3 2026',
-    servicesNeeded: ['Complimentary Art Advisory', 'Digital Lookbook & Spec Book'],
+    servicesNeeded: ['Fine Art Portraiture & Commissions', 'Bespoke Curated Lookbook & Spec Book'],
     projectNotes: preselectedNotes
   });
 
@@ -83,19 +85,19 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
   };
 
   const handleDownloadLookbook = () => {
-    const dummyLookbook = `SAATCHI ART | HOSPITALITY & TRADE LOOKBOOK (2026 EDITION)
---------------------------------------------------------------
-Curated Collections for Luxury Hotels, Resorts & Private Clubs
-Featured Artists: Elena Vaneva, Mateo Calderón, Freja Olesen, Alessandra Moretti
-Disciplines: Impasto Belgian Linen, Kinetic Mobiles, Acoustic NRC 0.85 Panels, Architectural Bas-Relief
-Trade Inquiries: trade@saatchiart.com | +1 (877) 275-8620
-Los Angeles • London • Global Fulfillment`;
+    const dummyLookbook = `${BRAND_NAME} | FINE ART PORTRAITURE & HOSPITALITY LOOKBOOK (2026 EDITION)
+----------------------------------------------------------------------
+Curated Fine Art & Portrait Collections for Luxury Hotels, Presidential Suites & Salons
+Featured Master Artists: Camille Dumont, Eleanor Vance, Marc Levy, Hanako Soga, Mateo Alvarez
+Disciplines: Old Master Oil Glazes, 24k Gold Leafing, Gypsum Bas-Relief, Sumi-e Washi, Palette-Knife Impasto
+Trade Inquiries: ${BRAND_EMAIL} | ${BRAND_PHONE}
+Paris • London • New York • Worldwide White-Glove Curation`;
 
     const blob = new Blob([dummyLookbook], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Saatchi_Art_Hospitality_Lookbook_2026.txt';
+    a.download = 'Atelier_Vivant_Portrait_Lookbook_2026.txt';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -111,10 +113,10 @@ Los Angeles • London • Global Fulfillment`;
         <div className="sticky top-0 z-20 bg-[#FAF9F6]/95 backdrop-blur-md px-6 py-4 border-b border-[#E5DFD5] flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8C837A]">
-              Hospitality Art Advisory
+              {BRAND_NAME} Advisory
             </span>
             <span className="text-[#C4BFB4]">/</span>
-            <span className="text-xs font-medium text-[#111111]">Request Consultation & Lookbook</span>
+            <span className="text-xs font-medium text-[#111111]">Request Fine Art & Portrait Consultation</span>
           </div>
 
           <button
@@ -141,7 +143,7 @@ Los Angeles • London • Global Fulfillment`;
                   Thank You, {formData.fullName || 'Design Partner'}
                 </h3>
                 <p className="text-sm text-[#5E574E] max-w-md mx-auto leading-relaxed">
-                  Your project brief has been assigned to a Senior Hospitality Art Advisor. We will contact you at <strong>{formData.email}</strong> within 1 business day with your tailored curation lookbook.
+                  Your project brief has been assigned to an {BRAND_NAME} Senior Curator. We will contact you at <strong>{formData.email}</strong> within 1 business day with your tailored portrait and spatial lookbook.
                 </p>
               </div>
 
@@ -167,7 +169,7 @@ Los Angeles • London • Global Fulfillment`;
                   className="px-6 py-3 bg-[#111111] text-white text-xs font-semibold uppercase tracking-wider flex items-center space-x-2 cursor-pointer hover:bg-[#2C2723]"
                 >
                   <Download className="w-4 h-4" />
-                  <span>Download 2026 Lookbook (PDF Preview)</span>
+                  <span>Download 2026 Lookbook (Preview)</span>
                 </button>
 
                 <button
@@ -184,10 +186,10 @@ Los Angeles • London • Global Fulfillment`;
               {/* Top intro */}
               <div className="space-y-1">
                 <h3 className="font-serif text-2xl font-normal text-[#111111]">
-                  Tell Us About Your Hospitality Project
+                  Commission Bespoke Fine Art & Portraits
                 </h3>
                 <p className="text-xs sm:text-sm text-[#615A52]">
-                  Whether you require artwork for 20 boutique suites or 500 resort keys, our complimentary advisory service provides full curation, in-situ mockups, and fixed trade pricing.
+                  Whether you require master portraiture for presidential suites or curated paintings for an entire boutique resort, our complimentary atelier service provides spatial curation, in-situ mockups, and fixed trade pricing.
                 </p>
               </div>
 
@@ -218,7 +220,7 @@ Los Angeles • London • Global Fulfillment`;
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-[#2C2723]">Company / Design Firm *</label>
+                  <label className="text-xs font-medium text-[#2C2723]">Company / Architecture Firm *</label>
                   <input
                     type="text"
                     required
@@ -302,12 +304,12 @@ Los Angeles • London • Global Fulfillment`;
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#423C35]">
                   {[
-                    'Complimentary Art Advisory',
-                    'Digital Lookbook & Spec Book',
-                    'Direct Site-Specific Artist Commissions',
+                    'Fine Art Portraiture & Commissions',
+                    'Bespoke Curated Lookbook & Spec Book',
+                    'Direct Site-Specific Master Artist Commissions',
                     'Acoustic Art & Noise Dampening Panels',
-                    'Tamper-Proof Security Hardware Packaging',
-                    'Global White-Glove Installation'
+                    'Tamper-Proof Security Cleat Hardware',
+                    'Global White-Glove Installation & Crating'
                   ].map((service) => (
                     <label key={service} className="flex items-center space-x-2 cursor-pointer">
                       <input
@@ -325,13 +327,13 @@ Los Angeles • London • Global Fulfillment`;
               {/* Project Notes & Attachments Hint */}
               <div className="space-y-1 pt-2 border-t border-[#EFECE6]">
                 <label className="text-xs font-medium text-[#2C2723]">
-                  Project Notes, Aesthetic Preferences or Specific Spaces
+                  Project Notes, Portrait Preferences or Specific Spaces
                 </label>
                 <textarea
                   rows={3}
                   value={formData.projectNotes}
                   onChange={(e) => setFormData({ ...formData, projectNotes: e.target.value })}
-                  placeholder="Share details on your interior concept, color palette, specific walls (e.g. 84 king suites + grand reception), or target opening date..."
+                  placeholder="Share details on your interior concept, color palette, specific rooms (e.g. 84 king suites + presidential salon), or target opening date..."
                   className="w-full px-3 py-2 text-xs sm:text-sm bg-white border border-[#D5CEC4] focus:outline-none focus:border-[#111111]"
                 />
               </div>
@@ -349,7 +351,7 @@ Los Angeles • London • Global Fulfillment`;
               {/* Submit Buttons */}
               <div className="pt-4 border-t border-[#E5DFD5] flex items-center justify-between">
                 <span className="text-[11px] text-[#8C827A]">
-                  🔒 Your project info remains strictly confidential.
+                  🔒 Your project brief remains strictly confidential.
                 </span>
 
                 <button

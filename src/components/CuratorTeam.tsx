@@ -1,6 +1,6 @@
 import React from 'react';
-import { Mail, Phone, Award, Sparkles, Building2, Check } from 'lucide-react';
-import { ADVISORY_TEAM } from '../data/hospitalityData';
+import { Mail, Phone, Award, Sparkles, Building2, Check, Palette } from 'lucide-react';
+import { ADVISORY_TEAM, BRAND_NAME } from '../data/hospitalityData';
 
 interface CuratorTeamProps {
   onRequestAdvisory: () => void;
@@ -14,13 +14,13 @@ export const CuratorTeam: React.FC<CuratorTeamProps> = ({ onRequestAdvisory }) =
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-16">
           <span className="text-xs font-semibold tracking-[0.25em] text-[#8C827A] uppercase">
-            Curatorial Leadership
+            Atelier Curatorial Leadership
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#111111] tracking-tight">
-            Meet Your Hospitality Art Advisors
+            Meet Your Fine Art & Portrait Curators
           </h2>
           <p className="text-sm sm:text-base text-[#5E574E] leading-relaxed">
-            Our curators pair deep art-world provenance with rigorous commercial architectural discipline, having led art programs for premier hotel brands worldwide.
+            Our atelier curators pair classical art-world provenance and portrait atelier leadership with architectural discipline, having guided art programs for premier hotel brands worldwide.
           </p>
         </div>
 
@@ -76,10 +76,10 @@ export const CuratorTeam: React.FC<CuratorTeamProps> = ({ onRequestAdvisory }) =
         <div className="mt-14 p-8 bg-[#F4EFE6] border border-[#DDD6CB] flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center md:text-left">
             <h4 className="font-serif text-2xl font-medium text-[#111111]">
-              Advisory Hubs in Los Angeles & London
+              Atelier Studios in Paris, London & New York
             </h4>
             <p className="text-xs sm:text-sm text-[#615A52]">
-              Sourcing works from over 100,000 emerging and established artists across 100+ countries with regional white-glove installation support.
+              Commissioning master portraits and fine art works from premier international ateliers with turnkey crating and white-glove museum installation worldwide.
             </p>
           </div>
 
@@ -88,7 +88,7 @@ export const CuratorTeam: React.FC<CuratorTeamProps> = ({ onRequestAdvisory }) =
               onClick={onRequestAdvisory}
               className="px-6 py-3 bg-[#111111] hover:bg-[#2C2723] text-white text-xs font-semibold uppercase tracking-widest transition-colors cursor-pointer"
             >
-              Book Advisory Call
+              Book Curatorial Consultation
             </button>
           </div>
         </div>

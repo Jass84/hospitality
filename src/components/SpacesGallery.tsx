@@ -11,9 +11,12 @@ import {
   Flame, 
   Maximize2,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  Palette,
+  LayoutGrid,
+  Columns
 } from 'lucide-react';
-import { HospitalitySpace, SpaceCategory, SpecItem } from '../types';
+import { HospitalitySpace, SpaceCategory, SpecItem, ArtOrientation } from '../types';
 import { HOSPITALITY_SPACES } from '../data/hospitalityData';
 
 interface SpacesGalleryProps {
@@ -24,6 +27,7 @@ interface SpacesGalleryProps {
   specItems: SpecItem[];
   onPreviewInVisualizer: (space: HospitalitySpace) => void;
   onRequestAdvisory: () => void;
+  onInspectArtwork: (space: HospitalitySpace) => void;
 }
 
 export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
@@ -33,18 +37,21 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
   onAddToSpecSheet,
   specItems,
   onPreviewInVisualizer,
-  onRequestAdvisory
+  onRequestAdvisory,
+  onInspectArtwork
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyAcoustic, setOnlyAcoustic] = useState(false);
   const [onlyFireRated, setOnlyFireRated] = useState(false);
+  const [selectedOrientation, setSelectedOrientation] = useState<ArtOrientation>('all');
 
-  const categories: { id: SpaceCategory; label: string; count: number }[] = useMemo(() => [
-    { id: 'all', label: 'All Hospitality Spaces', count: HOSPITALITY_SPACES.length },
+  const categories: { id: SpaceCategory; label: string; count: number; icon?: any }[] = useMemo(() => [
+    { id: 'all', label: 'All Curated Spaces', count: HOSPITALITY_SPACES.length },
+    { id: 'portraits', label: 'Fine Art Portraiture', count: HOSPITALITY_SPACES.filter(s => s.category === 'portraits').length, icon: Palette },
     { id: 'guest_rooms', label: 'Guest Rooms & Suites', count: HOSPITALITY_SPACES.filter(s => s.category === 'guest_rooms').length },
     { id: 'lobbies', label: 'Grand Lobbies & Atriums', count: HOSPITALITY_SPACES.filter(s => s.category === 'lobbies').length },
     { id: 'restaurants', label: 'Restaurants & Lounges', count: HOSPITALITY_SPACES.filter(s => s.category === 'restaurants').length },
-    { id: 'wellness', label: 'Wellness Sanctuaries & Spas', count: HOSPITALITY_SPACES.filter(s => s.category === 'wellness').length },
+    { id: 'wellness', label: 'Wellness & Spas', count: HOSPITALITY_SPACES.filter(s => s.category === 'wellness').length },
     { id: 'corridors', label: 'Corridors & Wayfinding', count: HOSPITALITY_SPACES.filter(s => s.category === 'corridors').length },
     { id: 'outdoor', label: 'Outdoor & Terraces', count: HOSPITALITY_SPACES.filter(s => s.category === 'outdoor').length },
   ], []);
@@ -54,6 +61,12 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
       // Category filter
       if (selectedCategory !== 'all' && space.category !== selectedCategory) {
         return false;
+      }
+      // Orientation filter
+      if (selectedOrientation !== 'all') {
+        if (selectedOrientation === 'portrait' && space.orientation !== 'portrait') return false;
+        if (selectedOrientation === 'landscape' && space.orientation !== 'landscape') return false;
+        if (selectedOrientation === 'multipanel' && space.orientation !== 'multipanel') return false;
       }
       // Technical toggles
       if (onlyAcoustic && !space.acousticRated) {
@@ -75,7 +88,7 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
       }
       return true;
     });
-  }, [selectedCategory, onlyAcoustic, onlyFireRated, searchQuery]);
+  }, [selectedCategory, selectedOrientation, onlyAcoustic, onlyFireRated, searchQuery]);
 
   const isItemInSpec = (spaceId: string) => {
     return specItems.some(item => item.spaceId === spaceId);
@@ -88,48 +101,53 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
         {/* Editorial Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-10">
           <span className="text-xs font-semibold tracking-[0.25em] text-[#8A8075] uppercase">
-            Curated Hospitality Portfolio
+            Curated Fine Art & Portrait Portfolio
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#111111] tracking-tight">
             Art Built for Every Hospitality Space
           </h2>
           <p className="text-sm sm:text-base text-[#5E574E] leading-relaxed">
-            Explore bespoke installations across luxury guest suites, double-height public lobbies, fine-dining restaurants, acoustic wellness retreats, and outdoor terraces worldwide.
+            Explore bespoke fine art portraits, vertical figurative canvases, double-height public lobby installations, and acoustic dining suites installed across prestigious hotels worldwide.
           </p>
         </div>
 
         {/* Category Navigation Tabs */}
-        <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-3 gap-2 border-b border-[#E2DDD3] scrollbar-none mb-8">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => onSelectCategory(cat.id)}
-              className={`px-4 py-2.5 text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer font-medium flex items-center space-x-1.5 ${
-                selectedCategory === cat.id
-                  ? 'bg-[#111111] text-[#FAF9F6] shadow-2xs'
-                  : 'bg-white/80 hover:bg-white text-[#524B43] border border-[#DDD6CB]'
-              }`}
-            >
-              <span>{cat.label}</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                selectedCategory === cat.id ? 'bg-[#333333] text-[#FAF9F6]' : 'bg-[#EAE4DA] text-[#6E665D]'
-              }`}>
-                {cat.count}
-              </span>
-            </button>
-          ))}
+        <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-3 gap-2 border-b border-[#E2DDD3] scrollbar-none mb-6">
+          {categories.map((cat) => {
+            const Icon = cat.icon;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => onSelectCategory(cat.id)}
+                className={`px-4 py-2.5 text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer font-medium flex items-center space-x-1.5 ${
+                  selectedCategory === cat.id
+                    ? 'bg-[#111111] text-[#FAF9F6] shadow-2xs'
+                    : 'bg-white/80 hover:bg-white text-[#524B43] border border-[#DDD6CB]'
+                }`}
+              >
+                {Icon && <Icon className="w-3.5 h-3.5 text-[#D4AF37]" />}
+                <span>{cat.label}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                  selectedCategory === cat.id ? 'bg-[#333333] text-[#FAF9F6]' : 'bg-[#EAE4DA] text-[#6E665D]'
+                }`}>
+                  {cat.count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Search & Technical Filter Controls Toolbar */}
-        <div className="bg-white p-4 border border-[#DDD6CB] shadow-2xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-8">
+        {/* Search & Orientation Filter Toolbar */}
+        <div className="bg-white p-4 border border-[#DDD6CB] shadow-2xs flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-8">
+          
           {/* Search Input */}
-          <div className="relative flex-1 max-w-lg">
+          <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8C827A]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by hotel, city, artist, material (e.g. Kyoto, Linen, Bronze, Acoustic)..."
+              placeholder="Search by portrait, hotel, artist, linen, plaster..."
               className="w-full pl-9.5 pr-4 py-2 text-xs sm:text-sm bg-[#FAF9F6] border border-[#D5CEC4] focus:outline-none focus:border-[#111111] text-[#1A1A1A] placeholder-[#8F887F]"
             />
             {searchQuery && (
@@ -142,34 +160,59 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
             )}
           </div>
 
-          {/* Quick Filter Toggles */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-[#423C35]">
+          {/* Orientation Filter Switcher */}
+          <div className="flex items-center space-x-1.5 text-xs text-[#554E46] overflow-x-auto pb-1 lg:pb-0">
+            <span className="text-[#8C827A] font-semibold text-[11px] uppercase mr-1 whitespace-nowrap">
+              Orientation:
+            </span>
+            {[
+              { id: 'all', label: 'All Displays' },
+              { id: 'portrait', label: 'Portrait (Vertical)' },
+              { id: 'landscape', label: 'Landscape' },
+              { id: 'multipanel', label: 'Diptych / Suites' }
+            ].map((ori) => (
+              <button
+                key={ori.id}
+                onClick={() => setSelectedOrientation(ori.id as ArtOrientation)}
+                className={`px-2.5 py-1.5 whitespace-nowrap border text-xs cursor-pointer transition-colors ${
+                  selectedOrientation === ori.id
+                    ? 'bg-[#111111] text-white border-[#111111] font-semibold'
+                    : 'bg-[#FAF9F6] border-[#D5CEC4] hover:bg-[#F2EDE4]'
+                }`}
+              >
+                {ori.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Technical Filter Toggles */}
+          <div className="flex flex-wrap items-center gap-2 text-xs text-[#423C35]">
             <button
               onClick={() => setOnlyAcoustic(!onlyAcoustic)}
-              className={`px-3 py-2 border text-xs flex items-center space-x-1.5 transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 border text-xs flex items-center space-x-1.5 transition-colors cursor-pointer ${
                 onlyAcoustic 
                   ? 'bg-[#111111] text-white border-[#111111]' 
                   : 'bg-[#FAF9F6] border-[#D5CEC4] hover:bg-[#F2EDE4]'
               }`}
             >
               <Volume2 className="w-3.5 h-3.5" />
-              <span>Acoustic Rated</span>
+              <span>Acoustic</span>
             </button>
 
             <button
               onClick={() => setOnlyFireRated(!onlyFireRated)}
-              className={`px-3 py-2 border text-xs flex items-center space-x-1.5 transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 border text-xs flex items-center space-x-1.5 transition-colors cursor-pointer ${
                 onlyFireRated 
                   ? 'bg-[#111111] text-white border-[#111111]' 
                   : 'bg-[#FAF9F6] border-[#D5CEC4] hover:bg-[#F2EDE4]'
               }`}
             >
               <Flame className="w-3.5 h-3.5" />
-              <span>Commercial Fire-Rated</span>
+              <span>Fire-Rated</span>
             </button>
 
             <div className="text-xs text-[#7A7268] pl-2 border-l border-[#DCD6CC] hidden sm:block">
-              Showing <strong className="text-[#111111]">{filteredSpaces.length}</strong> of {HOSPITALITY_SPACES.length} Spaces
+              Showing <strong className="text-[#111111]">{filteredSpaces.length}</strong> Spaces
             </div>
           </div>
         </div>
@@ -183,26 +226,30 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
                 setSearchQuery('');
                 setOnlyAcoustic(false);
                 setOnlyFireRated(false);
+                setSelectedOrientation('all');
                 onSelectCategory('all');
               }}
               className="px-5 py-2.5 bg-[#111111] text-[#FAF9F6] text-xs font-semibold uppercase tracking-wider cursor-pointer"
             >
-              Reset Filters
+              Reset All Filters
             </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredSpaces.map((space) => {
               const inSpec = isItemInSpec(space.id);
+              const isPortraitDisplay = space.orientation === 'portrait';
 
               return (
                 <div 
                   key={space.id}
                   id={`space-card-${space.id}`}
-                  className="group bg-white border border-[#DDD6CB] flex flex-col hover:border-[#111111] hover:shadow-md transition-all duration-300"
+                  className="group bg-white border border-[#DDD6CB] flex flex-col hover:border-[#111111] hover:shadow-lg transition-all duration-300"
                 >
-                  {/* Image Container with Interactive In-Situ Overlays */}
-                  <div className="relative aspect-4/3 overflow-hidden bg-[#EAE4DA]">
+                  {/* Image Container with In-Situ & Portrait Badges */}
+                  <div className={`relative overflow-hidden bg-[#EAE4DA] ${
+                    isPortraitDisplay ? 'aspect-3/4' : 'aspect-4/3'
+                  }`}>
                     <img
                       src={space.image}
                       alt={`${space.title} at ${space.propertyName}`}
@@ -210,13 +257,18 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
                       className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
                     />
 
-                    {/* Category & Room Type Pill */}
+                    {/* Room Type Pill */}
                     <div className="absolute top-3 left-3 bg-[#111111]/85 backdrop-blur-xs text-[#FAF9F6] text-[11px] font-medium tracking-wide px-2.5 py-1">
                       {space.roomType}
                     </div>
 
                     {/* Badges on Top Right */}
                     <div className="absolute top-3 right-3 flex flex-col gap-1 items-end">
+                      {space.isPortraitFeatured && (
+                        <span className="bg-[#D4AF37] text-black text-[10px] font-bold px-2 py-0.5 shadow-sm uppercase tracking-wider">
+                          Fine Art Portrait
+                        </span>
+                      )}
                       {space.acousticRated && (
                         <span className="bg-emerald-950/90 text-emerald-200 text-[10px] font-semibold px-2 py-0.5 border border-emerald-800/60 flex items-center space-x-1">
                           <Volume2 className="w-2.5 h-2.5" />
@@ -231,23 +283,23 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
                     </div>
 
                     {/* Quick Hover Overlay Actions */}
-                    <div className="absolute inset-0 bg-[#111111]/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 p-4">
+                    <div className="absolute inset-0 bg-[#111111]/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2.5 p-4">
                       <button
-                        onClick={() => onOpenSpaceModal(space)}
-                        className="px-3 py-2 bg-white text-[#111111] text-xs font-semibold tracking-wide flex items-center space-x-1.5 shadow-md hover:bg-[#F2EDE4] cursor-pointer"
-                        title="View Full Space Details & Curation"
+                        onClick={() => onInspectArtwork(space)}
+                        className="px-3 py-2 bg-white text-[#111111] text-xs font-semibold tracking-wide flex items-center space-x-1 shadow-md hover:bg-[#F2EDE4] cursor-pointer"
+                        title="Inspect High-Res Texture & Dimensions"
                       >
                         <Eye className="w-3.5 h-3.5" />
-                        <span>Inspect Space</span>
+                        <span>Inspect Texture</span>
                       </button>
 
                       <button
                         onClick={() => onPreviewInVisualizer(space)}
-                        className="px-3 py-2 bg-[#111111] text-white text-xs font-semibold tracking-wide flex items-center space-x-1.5 shadow-md hover:bg-[#2C2723] cursor-pointer"
+                        className="px-3 py-2 bg-[#111111] text-white text-xs font-semibold tracking-wide flex items-center space-x-1 shadow-md hover:bg-[#2C2723] cursor-pointer"
                         title="Preview Artwork on Wall in Visualizer"
                       >
                         <SlidersHorizontal className="w-3.5 h-3.5" />
-                        <span>Visualizer</span>
+                        <span>Room Visualizer</span>
                       </button>
                     </div>
                   </div>
@@ -274,20 +326,20 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
                         Artist: <strong className="text-[#1A1A1A]">{space.artistName}</strong> ({space.artistOrigin})
                       </div>
 
-                      {/* Medium & Dimensions */}
+                      {/* Medium & Substrate */}
                       <div className="text-xs text-[#6B645B] line-clamp-2">
                         {space.artMedium}
                       </div>
 
-                      {/* Dimensions & Framing */}
+                      {/* Dimensions & Trade Pricing */}
                       <div className="pt-2 border-t border-[#EFECE6] grid grid-cols-2 gap-2 text-[11px] text-[#7A7268]">
                         <div>
                           <span className="text-[#9E968D] block">Dimensions</span>
                           <span className="font-medium text-[#2C2723]">{space.dimensions}</span>
                         </div>
                         <div>
-                          <span className="text-[#9E968D] block">Volume Spec</span>
-                          <span className="font-medium text-[#2C2723]">{space.pricePerUnit.split('(')[0]}</span>
+                          <span className="text-[#9E968D] block">Tiered Trade Spec</span>
+                          <span className="font-semibold text-[#111111]">{space.pricePerUnit.split('(')[0]}</span>
                         </div>
                       </div>
 
@@ -310,7 +362,7 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
                         onClick={() => onOpenSpaceModal(space)}
                         className="text-xs font-medium text-[#111111] hover:underline flex items-center space-x-1 cursor-pointer"
                       >
-                        <span>Project Notes</span>
+                        <span>Curation Notes</span>
                         <ChevronRight className="w-3.5 h-3.5" />
                       </button>
 
@@ -347,13 +399,13 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
         <div className="mt-14 bg-[#111111] text-[#FAF9F6] p-8 sm:p-10 border border-[#2D2D2D] flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-left">
             <span className="text-[11px] font-semibold text-[#D4AF37] uppercase tracking-[0.2em]">
-              Custom Art Packages for Your Exact Floor Plans
+              Custom Art Packages & Portrait Commissions
             </span>
             <h3 className="font-serif text-2xl sm:text-3xl font-normal text-white">
               Have a multi-room hotel or restaurant rollout?
             </h3>
             <p className="text-xs sm:text-sm text-[#CCCCCC] max-w-xl">
-              Send us your architectural elevations or FF&E specs. Our hospitality advisory team will generate a tailored digital lookbook and fixed-price quote within 5 business days.
+              Send us your architectural elevations, FF&E boards, or portrait concept boards. Our atelier advisory team will generate a tailored digital lookbook and fixed-price quote within 5 business days.
             </p>
           </div>
 
@@ -368,7 +420,7 @@ export const SpacesGallery: React.FC<SpacesGalleryProps> = ({
               href="tel:+18772758620"
               className="px-5 py-3 border border-[#444444] text-[#FAF9F6] hover:bg-[#222222] text-xs font-medium tracking-wide text-center transition-colors"
             >
-              Speak to Hospitality Curator
+              Speak to Atelier Curator
             </a>
           </div>
         </div>

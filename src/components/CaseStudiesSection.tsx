@@ -1,7 +1,9 @@
 import React from 'react';
-import { Quote, Building2, Star, CheckCircle, ArrowRight } from 'lucide-react';
-import restaurantArtImage from '../assets/images/restaurant_art_space_1789809360366.jpg';
-import suiteArtImage from '../assets/images/hotel_suite_art_1789809346468.jpg';
+import { Quote, Building2, Star, CheckCircle, ArrowRight, Palette } from 'lucide-react';
+import hospitalityPortraitSuiteImage from '../assets/images/hospitality_portrait_suite.jpg';
+import grandPortraitGalleryHallImage from '../assets/images/grand_portrait_gallery_hall.jpg';
+import portraitBedheadSuiteImage from '../assets/images/portrait_bedhead_suite.jpg';
+import { BRAND_NAME } from '../data/hospitalityData';
 
 interface CaseStudiesSectionProps {
   onRequestAdvisory: () => void;
@@ -14,22 +16,22 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
 }) => {
   const caseStudies = [
     {
-      hotel: 'The Luminary Grand Hotel & Residences',
-      location: 'Zurich, Switzerland',
-      scale: '180 Luxury Keys & Public Atrium',
-      curationStory: 'Curated 240 custom pieces including a monumental 12-foot impasto linen canvas for the arrival lounge. Integrated Class-A acoustic backing reduced reverberation time by 38% in the double-height atrium.',
-      architectQuote: 'Saatchi Art’s hospitality advisors acted as a true extension of our design studio. They translated our architectural narrative into tactile, museum-grade artworks delivered on schedule.',
-      leadDesigner: 'Markus Keller, Principal, Keller & Vogt Interior Architecture',
-      image: 'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?q=80&w=800&auto=format&fit=crop'
+      hotel: 'The St. Regis Grand Library & Salon',
+      location: 'Paris, France',
+      scale: 'Heritage Suites & Private Reading Salons',
+      curationStory: 'Commissioned bespoke Old Master chiaroscuro portraiture with hand-applied 24k gold leaf on Belgian linen. Mounted on fluted dark walnut boiserie with dedicated brass picture lighting to create an intimate sanctuary for presidential guests.',
+      architectQuote: `${BRAND_NAME} acted as an extension of our design studio. They translated our historical narrative into museum-grade portraits that guests genuinely pause to admire.`,
+      leadDesigner: 'Margaux de Villeneuf, Creative Director, Studio Haussmann Paris',
+      image: hospitalityPortraitSuiteImage
     },
     {
-      hotel: 'Aura Bay Penthouse Suites',
-      location: 'Miami Beach, Florida',
-      scale: '84 Oceanfront Suites & Sky Lounge',
-      curationStory: 'Engineered a bespoke brass-framed diptych collection reflecting coastal dawn light. Produced with archival pigments and anti-theft security hardware, achieving 25% volume savings under hotel budget.',
-      architectQuote: 'Managing art procurement across 84 luxury keys usually invites logistical headaches. Saatchi Art consolidated shipping from 14 international artists into a single flawless delivery.',
-      leadDesigner: 'Elena Soriano, Design Director, Horizon Hospitality Group',
-      image: suiteArtImage
+      hotel: 'The Balmoral Historic Grand Hotel',
+      location: 'Edinburgh, Scotland',
+      scale: '120-Foot Arrival Promenade & Ballroom Foyer',
+      curationStory: 'Engineered a suite of 6 monumental ancestral portrait paintings in hand-carved gilded frames. Provided seismic 4-point security cleats and custom raking illumination that dramatically enhanced guest arrival impressions.',
+      architectQuote: `Curating monumental portrait art across high-traffic historic corridors usually invites security and lighting complexities. ${BRAND_NAME} executed the entire 6-piece promenade flawlessly.`,
+      leadDesigner: 'Alistair MacLeod, Principal Architect, Royal Heritage Design Group',
+      image: grandPortraitGalleryHallImage
     }
   ];
 
@@ -40,13 +42,13 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-16">
           <span className="text-xs font-semibold tracking-[0.25em] text-[#8C827A] uppercase">
-            Proven Hospitality Impact
+            Proven Fine Art & Portraiture Impact
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#111111] tracking-tight">
-            Case Studies in Hospitality Art
+            Case Studies in Bespoke Art Curation
           </h2>
           <p className="text-sm sm:text-base text-[#5E574E] leading-relaxed">
-            See how custom curations have defined hotel brand identity, improved guest satisfaction scores, and resolved real acoustic and spatial challenges.
+            See how custom portraits and curated painting collections have defined luxury hotel identities, elevated guest engagement, and enriched iconic architectural spaces.
           </p>
         </div>
 
@@ -98,12 +100,12 @@ export const CaseStudiesSection: React.FC<CaseStudiesSectionProps> = ({
               </div>
 
               <div className="p-6 sm:p-8 pt-0 flex items-center justify-between border-t border-[#F0ECE4] text-xs">
-                <span className="text-[#8C827A]">Full turnkey advisory & installation</span>
+                <span className="text-[#8C827A]">Full turnkey atelier curation & mounting</span>
                 <button
                   onClick={onExploreSpaces}
                   className="font-medium text-[#111111] hover:underline flex items-center space-x-1 cursor-pointer"
                 >
-                  <span>Explore Similar Spaces</span>
+                  <span>Explore Similar Suites</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>

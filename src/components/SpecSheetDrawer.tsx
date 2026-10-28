@@ -10,9 +10,11 @@ import {
   Building2, 
   Copy,
   Plus,
-  Minus
+  Minus,
+  Sparkles
 } from 'lucide-react';
 import { SpecItem } from '../types';
+import { BRAND_NAME, BRAND_EMAIL } from '../data/hospitalityData';
 
 interface SpecSheetDrawerProps {
   isOpen: boolean;
@@ -43,7 +45,7 @@ export const SpecSheetDrawer: React.FC<SpecSheetDrawerProps> = ({
   const handleDownloadCSV = () => {
     if (specItems.length === 0) return;
 
-    const headers = ['Line Item', 'Artwork Title', 'Property Reference', 'Medium', 'Dimensions', 'Trade Price Est', 'Quantity', 'Room Allocation', 'Notes'];
+    const headers = ['Line Item', 'Artwork Title', 'Property / Space Allocation', 'Medium & Substrate', 'Dimensions', 'Trade Price Est', 'Quantity', 'Room Tag', 'Curatorial Notes'];
     const rows = specItems.map((item, index) => [
       `"${index + 1}"`,
       `"${item.title.replace(/"/g, '""')}"`,
@@ -60,7 +62,7 @@ export const SpecSheetDrawer: React.FC<SpecSheetDrawerProps> = ({
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `Saatchi_Art_Hospitality_Spec_Sheet_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute('download', `Atelier_Vivant_Fine_Art_Spec_Sheet_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -70,15 +72,15 @@ export const SpecSheetDrawer: React.FC<SpecSheetDrawerProps> = ({
     if (specItems.length === 0) return;
 
     const summaryText = [
-      `SAATCHI ART | HOSPITALITY PROJECT SPEC SHEET`,
+      `${BRAND_NAME} | FINE ART & PORTRAITURE SPEC SHEET`,
       `Generated: ${new Date().toLocaleDateString()}`,
       `Total Line Items: ${specItems.length} | Total Units: ${totalItemsCount}`,
       `----------------------------------------------------`,
       ...specItems.map((item, idx) => 
-        `${idx + 1}. ${item.title}\n   Property/Room: ${item.propertyName} (${item.roomTag})\n   Dimensions: ${item.dimensions}\n   Medium: ${item.artMedium}\n   Est. Unit Price: ${item.priceEstimate}\n   Quantity: ${item.quantity} units\n`
+        `${idx + 1}. ${item.title}\n   Space / Room: ${item.propertyName} (${item.roomTag})\n   Dimensions: ${item.dimensions}\n   Medium: ${item.artMedium}\n   Est. Trade Price: ${item.priceEstimate}\n   Quantity: ${item.quantity} units\n   Notes: ${item.notes || 'Standard archival specification'}\n`
       ),
       `----------------------------------------------------`,
-      `For formal quoting or sample finishes: trade@saatchiart.com`
+      `For formal quoting or sample finishes: ${BRAND_EMAIL}`
     ].join('\n');
 
     navigator.clipboard.writeText(summaryText);
@@ -129,14 +131,14 @@ export const SpecSheetDrawer: React.FC<SpecSheetDrawerProps> = ({
                     Your Spec Sheet is Empty
                   </h4>
                   <p className="text-xs text-[#7A7268] max-w-xs mx-auto">
-                    Browse hospitality spaces or experiment with our Room Visualizer to specify artworks for your project.
+                    Browse fine art portraiture and spatial suites or configure a bespoke portrait commission in our interactive studio.
                   </p>
                 </div>
                 <button
                   onClick={onClose}
                   className="px-5 py-2.5 bg-[#111111] text-white text-xs font-semibold uppercase tracking-wider cursor-pointer"
                 >
-                  Explore Spaces & Art
+                  Explore Portrait Portfolio
                 </button>
               </div>
             ) : (
@@ -271,7 +273,7 @@ export const SpecSheetDrawer: React.FC<SpecSheetDrawerProps> = ({
               </button>
 
               <div className="text-center text-[11px] text-[#8C827A]">
-                Our curators will prepare a binding quote and material swatches within 48 hours.
+                Our atelier curators will prepare a binding quote and material swatches within 48 hours.
               </div>
             </div>
           )}

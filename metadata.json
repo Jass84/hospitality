@@ -1,6 +1,4 @@
 {
-  "name": "Saatchi Art | Hospitality Art Advisory",
-  "description": "Bespoke art curation, custom commissions, and tiered trade pricing for luxury hotels, boutique resorts, restaurants, and hospitality spaces worldwide.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "name": "ATELIER VIVANT | Fine Art Portraiture & Hospitality Art Advisory",
+  "description": "Bespoke fine art portraiture, figurative commissions, and turnkey art curation for luxury hotels, boutique resorts, restaurants, and hospitality spaces worldwide."
 }
